@@ -1,0 +1,216 @@
+# Solar Panel Fault Detection v2.0 - Configuration
+# =================================================
+
+# Project Info
+project_name: "solar_v2"
+version: "2.0"
+description: "Improved solar panel fault detection with merged classes"
+
+data:
+  path: "../data_v2/images"
+  original_classes: 12
+  merged_classes: 9
+  class_names:
+    - "Cell-Fault"
+    - "Cracking"
+    - "Diode-Fault"
+    - "Hot-Spot"
+    - "No-Anomaly"
+    - "Offline-Module"
+    - "Shadowing"
+    - "Soiling"
+    - "Vegetation"
+
+# Training Configuration
+training:
+  # Model selection
+  models:
+    yolov8:
+      enabled: true
+      size: "l"  # Options: s, m, l, x (using 'l' for better accuracy)
+    efficientnet:
+      enabled: true
+      version: "b3"  # Options: b0-b7 (b3 is good balance)
+    ensemble:
+      enabled: true
+      strategy: "weighted_average"  # Options: average, weighted_average, voting
+  
+  # Image settings
+  img_size: 640
+  batch_size: 16
+  epochs: 200
+  patience: 30
+  
+  # Optimizer settings
+  optimizer: "AdamW"
+  lr_initial: 0.0005
+  lr_final: 0.00001
+  weight_decay: 0.0005
+  momentum: 0.937
+  
+  # Learning rate schedule
+  lr_schedule:
+    type: "cosine"  # Options: cosine, step, exponential
+    warmup_epochs: 5
+    warmup_bias_lr: 0.1
+  
+  # Class weighting (for imbalanced classes)
+  use_class_weights: true
+  class_weight_method: "inverse_frequency"  # Options: inverse_frequency, effective_samples
+  
+  # Augmentation (optimized for thermal imagery)
+  augmentation:
+    # Color augmentation (reduced for thermal)
+    hsv_h: 0.01
+    hsv_s: 0.3
+    hsv_v: 0.4
+    
+    # Geometric augmentation
+    degrees: 15.0
+    translate: 0.15
+    scale: 0.7
+    shear: 5.0
+    perspective: 0.0001
+    
+    # Flipping
+    flipud: 0.0  # No vertical flip for solar panels
+    fliplr: 0.5
+    
+    # Advanced augmentation
+    mosaic: 0.0  # Disabled for thermal
+    mixup: 0.15
+    copy_paste: 0.15
+    
+    # Cutout/Erasing
+    cutout: 0.0
+    
+  # Multi-scale training
+  multi_scale: true
+  scale_range: [0.8, 1.2]
+
+# Validation Configuration
+validation:
+  val_split: 0.1
+  val_every_n_epochs: 5
+  save_best_only: false
+  save_period: 10
+  
+  # Metrics to track
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1-score"
+    - "confusion_matrix"
+    - "per_class_accuracy"
+
+# Model Ensemble Configuration
+ensemble:
+  weights:
+    yolov8: 0.5
+    efficientnet: 0.5
+  
+  voting_threshold: 0.5
+  
+  # Ensemble strategies
+  strategies:
+    primary: "weighted_average"  # Main strategy
+    fallback: "max_confidence"   # If primary fails
+
+# Evaluation Configuration
+evaluation:
+  test_time_augmentation: true
+  tta_transforms: 3
+  confidence_threshold: 0.5
+  
+  # Analysis
+  generate_confusion_matrix: true
+  generate_per_class_report: true
+  generate_failure_analysis: true
+  save_misclassified: true
+
+# Deployment Configuration
+deployment:
+  # Raspberry Pi settings
+  raspberry_pi:
+    export_format: "tflite"
+    quantization: "int8"
+    target_img_size: 320
+    optimize_for_edge: true
+  
+  # Model compression
+  compression:
+    pruning: false
+    quantization: true
+    knowledge_distillation: false
+
+# Hardware Configuration
+hardware:
+  device: "cuda"  # Options: cuda, cpu, mps (Mac)
+  mixed_precision: true
+  workers: 8
+  pin_memory: true
+  
+  # Multi-GPU
+  multi_gpu: false
+  gpu_ids: [0]
+
+# Logging Configuration
+logging:
+  log_level: "INFO"
+  log_dir: "logs_v2"
+  tensorboard: true
+  wandb: false
+  
+  # What to log
+  log_every_n_steps: 10
+  save_images: true
+  save_predictions: true
+
+# Checkpoint Configuration
+checkpoints:
+  save_dir: "checkpoints_v2"
+  keep_top_k: 3
+  monitor_metric: "val_accuracy"
+  mode: "max"
+
+# Experiment Tracking
+experiment:
+  name: "solar_v2_merged_classes"
+  tags:
+    - "solar-panels"
+    - "thermal-imagery"
+    - "fault-detection"
+    - "merged-classes"
+  notes: |
+    Improved training pipeline with:
+    - Merged classes (12 → 9)
+    - YOLOv8-large + EfficientNet
+    - Ensemble approach
+    - Target: 85-90% accuracy
+
+# Random Seed (for reproducibility)
+seed: 42
+
+# Performance Targets
+targets:
+  min_accuracy: 0.85
+  target_accuracy: 0.90
+  max_training_time_hours: 48
+  max_inference_time_ms: 100  # For Raspberry Pi
+
+# Notes and Reminders
+notes: |
+  TRAINING WORKFLOW:
+  1. Run: python reorganize_dataset.py
+  2. Run: python train_yolov8_v2.py
+  3. Run: python train_efficientnet.py
+  4. Run: python ensemble_predict.py
+  5. Run: python evaluate_comprehensive.py
+  6. Run: python export_for_deployment.py
+  
+  EXPECTED IMPROVEMENTS:
+  - Class merging: +5-8%
+  - Better model: +3-5%
+  - Ensemble: +2-3%
+  - Total: 77.4% → 85-90%

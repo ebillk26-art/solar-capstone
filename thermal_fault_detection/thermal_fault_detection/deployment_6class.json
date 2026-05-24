@@ -1,0 +1,20 @@
+{
+  "model": "ResNet-18",
+  "test_accuracy": 93.47198151357597,
+  "classes": [
+    "Cell-Fault",
+    "Diode-Fault",
+    "Hot-Spot",
+    "No-Anomaly",
+    "Offline-Module",
+    "Shadowing"
+  ],
+  "num_classes": 6,
+  "image_size": 224,
+  "critical_faults": [
+    "Hot-Spot",
+    "Cell-Fault",
+    "Diode-Fault",
+    "Offline-Module"
+  ]
+}

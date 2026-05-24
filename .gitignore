@@ -1,0 +1,69 @@
+# ============================================================
+#  Solar PV Fault Detection — .gitignore
+# ============================================================
+
+# ----- Model weight files (too large for GitHub) ------------
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.engine
+*.torchscript
+
+# ----- Dataset images and raw data --------------------------
+data_v2/
+RGB_4Class_Detection/
+thermal_dataset/
+datasets/
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tiff
+*.tif
+# (keep assessment output PNGs — override below)
+!rgb_fault_detect/assessment_outputs/*.png
+
+# ----- YOLO training run artefacts (large) ------------------
+runs_v2/
+runs_rgb/
+runs_thermal/
+runs/
+
+# ----- Jupyter checkpoints ----------------------------------
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# ----- Python cache -----------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# ----- Virtual environments ---------------------------------
+venv/
+env/
+.env/
+.venv/
+
+# ----- OS files ---------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ----- Logs and temporary files -----------------------------
+*.log
+*.tmp
+*.temp
+wandb/
+lightning_logs/
+
+# ----- Large CSV result files (optional — comment out to keep)
+# *.csv
+
+# ----- Secrets / credentials --------------------------------
+.env
+secrets.yaml
+credentials.json

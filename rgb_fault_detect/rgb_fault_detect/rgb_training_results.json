@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-03-12T16:23:06.396614",
+  "classes": [
+    "Bird-drop",
+    "Clean",
+    "Dusty",
+    "Physical-Damage"
+  ],
+  "num_classes": 4,
+  "models": {
+    "yolov8m": {
+      "val_accuracy": 0.9763779640197754,
+      "test_accuracy": 0.9393939393939394
+    },
+    "yolov11m": {
+      "val_accuracy": 0.9790025949478149,
+      "test_accuracy": 0.9848484848484849
+    }
+  },
+  "best_model": "yolov11m",
+  "best_accuracy": 0.9848484848484849,
+  "dataset_stats": {
+    "train": {
+      "Bird-drop": 177,
+      "Clean": 169,
+      "Dusty": 162,
+      "Physical-Damage": 132
+    },
+    "val": {
+      "Bird-drop": 104,
+      "Clean": 102,
+      "Dusty": 97,
+      "Physical-Damage": 78
+    },
+    "test": {
+      "Bird-drop": 17,
+      "Clean": 18,
+      "Dusty": 16,
+      "Physical-Damage": 15
+    }
+  }
+}

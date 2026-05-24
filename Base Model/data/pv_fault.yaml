@@ -1,0 +1,11 @@
+path: data
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: hotspot
+  1: soiling
+  2: crack
+  3: pid
+  4: diode_fault
